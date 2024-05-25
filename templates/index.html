@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="shortcut icon" href="../static/img/icon-pizza.png" type="image/png">
 </head>
 <body>
     <div class="navbar">
-        <a href="/">Головна</a>
-        <a href="/menu">Меню</a>
+        <a href="/">Home</a>
+        <a href="/menu">Offer</a>
     </div>
     
     <div class="content">
-        <!--<img src="../static/img/homePage_pizza.png" alt="Pizza">-->
         <div class="text">
-            <p>Піцерія Orderman у Києві вирізняється своєю неперевершеною якістю, неповторним смаком та атмосферою, яка завжди наповнена гастрономічними враженнями. Це місце, де кожен відвідувач може насолодитися справжньою симфонією смаків, створених нашими досвідченими піцамейкерами.</p>
-            <a href="/menu" class="menu-button">Переглянути меню</a>
+            <p>Orderman pizzeria in Kyiv stands out for its unsurpassed quality, unique taste and atmosphere, which is always full of gastronomic experiences. This is a place where every visitor can enjoy a real symphony of flavors created by our experienced pizza makers.</p>
+            <a href="/menu" class="menu-button">Check offer</a>
         </div>
+        <img src="../static/img/homePage_pizza.png" alt="Pizza Image">
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.content').classList.add('visible');
+        });
+    </script>
 </body>
 </html>
+
