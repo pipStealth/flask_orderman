@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-    <link rel="shortcut icon" href="../static/img/icon-pizza.png" type="image/png">
-</head>
+<link type="text/css" href="../static/css/index.css" rel="stylesheet" />
+<script src="../static/js/index.js"></script>
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+
 <body>
-    <div class="navbar">
-        <a href="/">Home</a>
-        <a href="/menu">Offer</a>
-    </div>
-    
+
     <div class="content">
         <div class="text">
             <p>Orderman pizzeria in Kyiv stands out for its unsurpassed quality, unique taste and atmosphere, which is always full of gastronomic experiences. This is a place where every visitor can enjoy a real symphony of flavors created by our experienced pizza makers.</p>
@@ -20,7 +13,5 @@
         </div>
         <img src="../static/img/homePage_pizza.png" alt="Pizza Image">
     </div>
-    <script src="../static/js/index.js"></script>
 </body>
-</html>
-
+{% endblock %}

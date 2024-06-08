@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Pizza Oderman</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/404.css">
-</head>
+<link type="text/css" href="../static/css/404.css" rel="stylesheet" />
+<script src="../static/js/404.js"></script>
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
 <body>
     <div class="container">
         <h1>404</h1>
@@ -15,6 +12,5 @@
         <a href="/menu" id="menuButton">View Our Menu</a>
     </div>
 
-    <script src="../static/js/404.js"></script>
 </body>
-</html>
+{% endblock %}
