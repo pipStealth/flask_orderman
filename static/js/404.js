@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $('.container').hide().fadeIn(1200);  // 1000 milliseconds = 1 second
+});
+
 
 
 document.getElementById('homeButton').addEventListener('click', function(event) {
@@ -11,3 +15,4 @@ document.getElementById('menuButton').addEventListener('click', function(event) 
     alert('Redirecting to Menu Page');
     window.location.href = '/menu';
 });
+

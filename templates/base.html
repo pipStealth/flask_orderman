@@ -15,11 +15,10 @@
 <body>
 {% block content -%}
 	{%- block mainmenu -%}
-
     <div class="navbar">
         {% for item in menu %}
         <a href="{{ url_for(item.endpoint) }}">{{ item.title }}</a>
-        {% endfor %}  
+        {% endfor %}
     </div>
 
 	{% endblock mainmenu -%}

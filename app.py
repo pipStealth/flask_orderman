@@ -10,7 +10,7 @@ navMenu = [
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', CSSpath="../static/css/404.css"), 404
+    return render_template('404.html', menu=navMenu), 404
 
 @app.route('/')
 def home():
