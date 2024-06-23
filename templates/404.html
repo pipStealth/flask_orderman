@@ -15,5 +15,17 @@
         <a href="/menu" id="menuButton">View Our Menu</a>
     </div>
 
+    <script>
+        function updateTextColor() {
+            const container = document.querySelector('.container');
+            const currentMode = getCurrentMode();
+            if (currentMode === 'dark-mode') {
+                container.style.color = '#ffffff'; // Черный цвет текста в темном режиме
+            } else {
+                container.style.color = '#ffffff'; // Белый цвет текста в светлом режиме
+            }
+        }
+    </script>
+
 </body>
 {% endblock %}

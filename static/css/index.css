@@ -76,7 +76,208 @@ img:hover {
     transform: scale(1.05);
 }
 
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 0 auto; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.login-container form {
+    display: flex;
+    flex-direction: column;
+}
+.login-container label, .login-container input {
+    margin-bottom: 10px;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1em;
+}
+.login-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 1em;
+}
+.login-container input[type="submit"]:hover {
+    background-color: #45a049;
+}
 
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+body.dark-mode {
+    background-color: #000000;
+    color: #ffffff;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar a {
+    margin-right: 10px;
+}
+.mode-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.flash-messages {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
+
+/* Success message styles */
+.flash-messages .flash-success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+/* Error message styles */
+.flash-messages .flash-error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+/* Additional common styles */
+.flash-messages .flash-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+
+/* Стили для контейнера food-container */
+.food-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Стили для изображения */
+.food-container img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 5px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+/* Стили для текстового содержимого */
+.food-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Стили для заголовка */
+.food-container .title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Стили для ссылки заголовка */
+.food-container .title a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.food-container .title a:hover {
+    color: #007BFF;
+}
+
+/* Стили для описания */
+.food-container .annonce {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Стили для цены */
+.food-container .price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #28a745;
+    align-self: flex-end;
+}
+
+/* Стили для списка ul */
+.list-posts {
+    list-style: none;
+    padding: 0;
+}
+
+/* Убираем маркеры для списка */
+.list-posts li {
+    list-style: none;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .food-container {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .food-container img {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .food-details {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .food-container .title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .food-container .annonce {
+        font-size: 0.9em;
+        margin-bottom: 10px;
+    }
+
+    .food-container .price {
+        font-size: 1em;
+        align-self: flex-start;
+    }
+}
 
 @media screen and (max-width: 768px) {
     .content {

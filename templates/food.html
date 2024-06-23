@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+<h2>{{ item.name }}: </h2>
+<ul class="list-posts">
+
+    <div class="food-container">
+        <img src="../static/img/pizza_offer.png" alt="Pizza Image">
+        <div class="food-details">
+            <p class="title"><a href="/menu"><{{ item.name }}</a></p>
+            <p class="annonce">{{ item.description}}</p>
+        </div>
+        <p class="price">{{ item.price }}₴</p>
+    </div>
+
+
+</ul>
+{% endblock %}

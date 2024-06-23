@@ -1,11 +1,13 @@
 <link type="text/css" href="../static/css/index.css" rel="stylesheet" />
 <script src="../static/js/index.js"></script>
+
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
 
-<body>
+{% from 'macros.html' import styles, toggle_button %}
 
+<body>
     <div class="content">
         <div class="text">
             <p>Orderman pizzeria in Kyiv stands out for its unsurpassed quality, unique taste and atmosphere, which is always full of gastronomic experiences. This is a place where every visitor can enjoy a real symphony of flavors created by our experienced pizza makers.</p>

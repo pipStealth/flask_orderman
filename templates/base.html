@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="../static/img/icon-pizza.png" type="image/png">
-{% block title -%}
-{% if title %}
-	<title>{{title}}</title>
-{% else %}
-	<title>Pizza Orderman</title>
-{% endif %}
-{% endblock %}
-</head>
-<body>
-{% block content -%}
-	{%- block mainmenu -%}
-    <div class="navbar">
-        {% for item in menu %}
-        <a href="{{ url_for(item.endpoint) }}">{{ item.title }}</a>
-        {% endfor %}
-    </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/img/icon-pizza.png" type="image/png">
+    <link type="text/css" href="../static/css/index.css" rel="stylesheet" />
+    {% block title -%}
+    {% if title %}
+        <title>{{title}}</title>
+    {% else %}
+        <title>Pizza Orderman</title>
+    {% endif %}
+    {% endblock %}
 
-	{% endblock mainmenu -%}
-{% endblock -%}
-</div>
+</head>
+<body class="{{ 'dark-mode' if dark_mode else 'light-mode' }}">
+    {% block content -%}
+        {%- block mainmenu -%}
+        <div class="navbar">
+            <div>
+                {% for p in menu %}
+                <a href="{{ url_for(p.url) }}">{{ p.title }}</a>
+                {% endfor %}
+            </div>
+            <div>
+                <button id="mode-toggle" class="mode-toggle-btn" onclick="toggleMode()">
+                    <img id="mode-toggle-icon" src="../static/img/{{ 'darkmode.png' if dark_mode else 'lightmode.png' }}" alt="Toggle Mode">
+                </button>
+            </div>
+        </div>
+        {% endblock mainmenu -%}
+    {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/404.js"></script>
 </body>
 </html>
