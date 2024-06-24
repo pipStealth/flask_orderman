@@ -25,6 +25,7 @@
             </div>
             <div>
                 <button id="mode-toggle" class="mode-toggle-btn" onclick="toggleMode()">
+                    {% from 'macros.html' import styles, toggle_button %}
                     <img id="mode-toggle-icon" src="../static/img/{{ 'darkmode.png' if dark_mode else 'lightmode.png' }}" alt="Toggle Mode">
                 </button>
             </div>

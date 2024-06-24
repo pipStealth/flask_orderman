@@ -77,7 +77,7 @@ img:hover {
 }
 
 .login-container {
-    background-color: #fff;
+    background-color: #cd8b8b;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -243,6 +243,114 @@ body.dark-mode {
 .list-posts li {
     list-style: none;
 }
+
+/* Style for the select element */
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Style for the select element on focus */
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* Style for the option elements */
+option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Optional: Style for hovered option elements */
+select:hover option {
+    background-color: #f1f1f1;
+}
+
+/* Style for disabled option elements */
+option:disabled {
+    color: #999;
+}
+
+/* Style for the select container to add an arrow */
+.select-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.select-container::after {
+    content: '\25BC'; /* Unicode character for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #333;
+}
+/* Add this to your index.css */
+.title-section {
+    display: flex;
+    align-items: center;
+}
+
+.title-section .title {
+    margin: 0;
+}
+
+.purchase-button {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+.purchase-button:hover {
+    background-color: #ff6347;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .food-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .purchase-button {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
+
 
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {

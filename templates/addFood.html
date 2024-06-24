@@ -1,6 +1,9 @@
 <link type="text/css" href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" />
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
+<link type="text/css" href="../static/css/index.css" rel="stylesheet" />
+<script src="../static/js/index.js"></script>
+
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
@@ -8,7 +11,7 @@
     <div class="login-container">
         <h2>Admin Panel | AddFood</h2>
         <form action="" method="POST">
-            
+
             <label for="name">Name food:</label>
             <input type="text" id="name" name="name" required>
 
@@ -17,6 +20,14 @@
 
             <label for="description">Description:</label>
             <input type="text" id="description" name="description" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="Pizza">Pizza</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Wings">Wings</option>
+                <option value="Potato">Potato</option>
+            </select>
 
             <input type="submit" value="Add">
         </form>
@@ -31,11 +42,6 @@
                 {% endif %}
             {% endwith %}
         </div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-
-          {% endif %}
-        {% endwith %}
     </div>
 </body>
 {% endblock %}

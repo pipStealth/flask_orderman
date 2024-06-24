@@ -36,3 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.src = '../static/img/lightmode.png';
     }
 });
+
+// Add this to your index.js
+function purchaseItem(itemId) {
+    // Implement the purchase logic here
+    // For example, you can send an AJAX request to your backend to handle the purchase
+    alert('Item with ID ' + itemId + ' purchased!');
+}

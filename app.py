@@ -102,8 +102,9 @@ def routeFood():
         name = request.form["name"]
         price = request.form["price"]
         description = request.form["description"]
-
-        dbase.addFood(name=name, price=price, description=description)
+        category = request.form["category"]
+        print(name, category)
+        dbase.addFood(title=name, price=price, description=description, type=category)
         flash("Успішно!", "success")
 
     return render_template("addFood.html", title="Oderman | AddFood", menu=dbase.getMenu()) 

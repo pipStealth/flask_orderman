@@ -1,18 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
-<h2>{{ item.name }}: </h2>
+
+{% from 'macros.html' import styles, toggle_button %}
+
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;{{ item.title }}: </h2>
 <ul class="list-posts">
 
     <div class="food-container">
-        <img src="../static/img/pizza_offer.png" alt="Pizza Image">
+        {% if item.type == "Pizza" %}
+            <img src="../static/img/pizza_offer.png" alt="Pizza Image">
+        {% elif item.type == "Beverages" %}
+            <img src="../static/img/drinks_offer.png" alt="Pizza Image">
+        {% elif item.type == "Wings" %}
+            <img src="../static/img/wings_offer.jpg" alt="Pizza Image">
+        {% else %}
+            <img src="../static/img/potato_offer.png" alt="Pizza Image">
+        {% endif %}
         <div class="food-details">
-            <p class="title"><a href="/menu"><{{ item.name }}</a></p>
+            <div class="title-section">
+                <p class="title"><a href="{{ url_for('menu')}}"> {{ "<" + item.title }}</a></p>
+                <button class="purchase-button" onclick="">Buy Now</button>
+            </div>
             <p class="annonce">{{ item.description}}</p>
         </div>
         <p class="price">{{ item.price }}₴</p>
     </div>
-
 
 </ul>
 {% endblock %}
