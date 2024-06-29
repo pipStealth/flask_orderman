@@ -127,3 +127,59 @@ class DataBase:
             return False
         return True
 
+    def addGift(self, promo, amount, count):
+        try:
+            self.__cur.execute("SELECT COUNT(*) as count FROM gift WHERE promo LIKE ?", (promo,))
+            res = self.__cur.fetchone()
+            if res['count'] > 0:
+                print("Account with this email already exists")
+                return False
+            
+            self.__cur.execute("INSERT INTO gift (promo, amount, count) VALUES (?, ?, ?)", (promo, amount, count))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Error adding account to DB: ", e)
+            return False
+
+        return True
+    
+    def useGift(self, promo, user):
+        try:
+            self.__cur.execute("SELECT amount, count FROM gift WHERE promo LIKE ?", (promo,))
+            gift_res = self.__cur.fetchone()
+            
+            if gift_res is None or gift_res['amount'] <= 0 or gift_res['count'] <= 0:
+                return False
+            
+            amount = gift_res['amount']
+            count = gift_res['count']
+    
+            # Уменьшаем количество использований на 1
+            new_count = count - 1
+    
+            if new_count <= 0:
+                # Если количество использований достигло нуля, удаляем запись
+                self.__cur.execute("DELETE FROM gift WHERE promo LIKE ?", (promo,))
+            else:
+                # Иначе обновляем количество использований
+                self.__cur.execute("UPDATE gift SET count = ? WHERE promo LIKE ?", (new_count, promo))
+            
+            self.__db.commit()
+    
+            self.__cur.execute("SELECT balance FROM account WHERE id = ?", (user,))
+            user_res = self.__cur.fetchone()
+            if user_res is None:
+                print(f"User with id {user} not found.")
+                return False
+    
+            current_balance = user_res['balance']
+            new_balance = current_balance + amount
+            self.__cur.execute("UPDATE account SET balance = ? WHERE id = ?", (new_balance, user))
+            self.__db.commit()
+    
+        except sqlite3.Error as e:
+            print("Error updating account in DB: ", e)
+            return False
+    
+        return True
+    

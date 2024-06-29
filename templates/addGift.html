@@ -9,18 +9,20 @@
 {{ super() }}
 <body>
     <div class="login-container">
-        <h2>Log in</h2>
+        <h2>Admin Panel | AddFood</h2>
         <form action="" method="POST">
 
-            <label for="email">Your E-mail:</label>
-            <input type="text" id="email" name="email" required>
+            <label for="name">Name of promo gift:</label>
+            <input type="text" id="name" name="name" required>
 
-            <label for="psw">Your password:</label>
-            <input type="text" id="psw" name="psw" required>
+            <label for="amount">Amount of gift:</label>
+            <input type="text" id="amount" name="amount" required>
+
+            <label for="limit">Limit of using the pormo:</label>
+            <input type="text" id="limit" name="limit" required>
 
             <input type="submit" value="Add">
         </form>
-        <p class="title"><a href="/registration">Sign in</a></p>
         <div class="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}

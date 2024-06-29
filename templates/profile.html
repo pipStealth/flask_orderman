@@ -10,19 +10,29 @@
 
     <div class="item-details">
         <div class="item-title-section">
-            <p class="item-title">Номер: {{ item.phone }}</p>
+            <p class="item-title">Number: {{ item.phone }}</p>
         </div>
-        <p class="item-balance">Баланс: {{ item.balance }}₴</p>
+        <p class="item-balance">Balance: {{ item.balance }}₴</p>
+        <p class="item-balance">Total price: {{ fullprice }}₴</p>
         <div class="item-buttons">
-            <button class="btn btn-order-all">Order All</button>
-            <button class="btn btn-payment">Payment</button>
-            <button class="btn btn-gift">Gift</button>
+            <form action="" method="post">
+                <button class="btn btn-order-all" type="submit">Order All</button>
+            </form>
+            <form action="" method="post">
+                <button class="btn btn-payment">Payment</button>
+            </form>
+            <form action="{{ url_for('useGift')}}" method="get">
+                <button class="btn btn-gift">Gift</button>
+            </form>
+            <form action="{{ url_for('logout')}}" method="get">
+                <button class="btn btn-logout">Logout</button>
+            </form>
         </div>
     </div>
 </div>
 
 <h2 class="item-heading">Yours' orders: </h2>
-
+{% set my_variable = 0 %}
 {% for item in orders %}
 
     <div class="food-container">
@@ -41,5 +51,7 @@
         </div>
         <p class="price">{{ item.price }}₴</p>
     </div>
+    
 {% endfor %}
+
 {% endblock %}

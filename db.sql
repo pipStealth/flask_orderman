@@ -22,9 +22,9 @@ offer text NOT NULL,
 balance integer NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS offer (
+CREATE TABLE IF NOT EXISTS gift (
 id integer PRIMARY KEY AUTOINCREMENT,
-foodid text NOT NULL,
-phone text NOT NULL, 
-adress text NOT NULL
+promo text NOT NULL,
+amount integet NOT NULL, 
+count integet NOT NULL
 );

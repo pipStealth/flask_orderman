@@ -177,14 +177,20 @@ def logout():
 @app.route('/profile/<alias>', methods=["GET"])
 @login_required
 def profile(alias):
+    if not int(current_user.get_id()) == int(alias):
+        return redirect(url_for('home'))
     user_id = current_user.get_id()
     orders = dbase.getOrdersByUserId(user_id)
-    return render_template("profile.html", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()), orders=orders, title=f"Profile | {current_user.getName()}")
+    fullprice = 0
+    for i in orders:
+        fullprice += float(i['price'])
+    return render_template("profile.html", menu=dbase.getMenu(), fullprice=fullprice, item=dbase.getUserByEmail(current_user.getEmail()), orders=orders, title=f"Profile | {current_user.getName()}")
 
 @app.route("/food/<alias>/order", methods=["POST", "GET"])
 @login_required
 def orderFood(alias):
     if request.method == "POST":
+
         item = dbase.getFoodByAlias(alias)
         if item:
             dbase.userOrder(current_user.get_id(), item['id'])
@@ -192,6 +198,31 @@ def orderFood(alias):
         else:
             flash("Food item not found", "error")
     return redirect(url_for('home'))
+
+@app.route("/addGift", methods=["POST", "GET"])
+def routeGift():
+    if not aIsLogged():
+        return redirect(url_for("alogin"))
+
+    if request.method == "POST":
+        name = request.form["name"]
+        amount = request.form["amount"]
+        limit = request.form["limit"]
+        dbase.addGift(promo=name, amount=amount, count=limit)
+        flash("Успішно!", "success")
+
+    return render_template("addGift.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+
+@app.route("/gift", methods=["POST", "GET"])
+@login_required
+def useGift():
+    if request.method == "POST":
+        name = request.form.get("promo")
+        if name:
+            gif = dbase.useGift(name, current_user.get_id())
+            flash("Success", "success") if gif else flash("This gift has used already!", "error")
+
+    return render_template("useGift.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
 
 # =============================================================================
 # Operations setup
