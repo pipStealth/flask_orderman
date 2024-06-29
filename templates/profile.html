@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+
+{% from 'macros.html' import styles, toggle_button %}
+
+<h2 class="item-heading">{{ item.name }}: </h2>
+<div class="item-container">
+    <img src="../static/img/profile.png" alt="Pizza Image" class="item-image">
+
+    <div class="item-details">
+        <div class="item-title-section">
+            <p class="item-title">Номер: {{ item.phone }}</p>
+        </div>
+        <p class="item-balance">Баланс: {{ item.balance }}₴</p>
+        <div class="item-buttons">
+            <button class="btn btn-order-all">Order All</button>
+            <button class="btn btn-payment">Payment</button>
+            <button class="btn btn-gift">Gift</button>
+        </div>
+    </div>
+</div>
+
+<h2 class="item-heading">Yours' orders: </h2>
+
+{% for item in orders %}
+
+    <div class="food-container">
+        {% if item.type == "Pizza" %}
+            <img src="../static/img/pizza_offer.png" alt="Pizza Image">
+        {% elif item.type == "Beverages" %}
+            <img src="../static/img/drinks_offer.png" alt="Pizza Image">
+        {% elif item.type == "Wings" %}
+            <img src="../static/img/wings_offer.jpg" alt="Pizza Image">
+        {% else %}
+            <img src="../static/img/potato_offer.png" alt="Pizza Image">
+        {% endif %}
+        <div class="food-details">
+            <p class="title"><a href="{{ url_for('showFood', alias=item.id)}}">{{ item.title }}></a></p>
+            <p class="annonce">{{ item.description[:50] | striptags }}...</p>
+        </div>
+        <p class="price">{{ item.price }}₴</p>
+    </div>
+{% endfor %}
+{% endblock %}

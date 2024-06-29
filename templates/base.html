@@ -25,9 +25,13 @@
             </div>
             <div>
                 <button id="mode-toggle" class="mode-toggle-btn" onclick="toggleMode()">
-                    {% from 'macros.html' import styles, toggle_button %}
                     <img id="mode-toggle-icon" src="../static/img/{{ 'darkmode.png' if dark_mode else 'lightmode.png' }}" alt="Toggle Mode">
                 </button>
+                <form action="{{ url_for('profile', alias=item.id) }}" method="get">
+                <button id="mode-toggle" class="mode-toggle-btn" onclick="">
+                    <img id="mode-toggle-icon" src="../static/img/account.png" alt="Toggle Mode">
+                </button>
+                </form>
             </div>
         </div>
         {% endblock mainmenu -%}

@@ -20,7 +20,9 @@
         <div class="food-details">
             <div class="title-section">
                 <p class="title"><a href="{{ url_for('menu')}}"> {{ "<" + item.title }}</a></p>
-                <button class="purchase-button" onclick="">Buy Now</button>
+                <form action="{{ url_for('orderFood', alias=item.id) }}" method="post">
+                    <button class="purchase-button" type="submit">Order It</button>
+                </form>
             </div>
             <p class="annonce">{{ item.description}}</p>
         </div>
