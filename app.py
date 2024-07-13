@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, g
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, g, jsonify
 import os
 import sqlite3
 import hashlib
@@ -6,6 +6,8 @@ from DataBase import DataBase
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from UserData import UserLogin
+from cloudipsp import Api, Checkout
+from request import *
 
 # =============================================================================
 # Configuration
@@ -61,6 +63,15 @@ def close_db(error):
     if hasattr(g, 'link_db'):
         g.link_db.close()
 
+def getprice():
+    user_id = current_user.get_id()
+    orders = dbase.getOrdersByUserId(user_id)
+    fullprice = 0
+    for i in orders:
+        fullprice += float(i['price'])
+
+    return fullprice
+
 def aIsLogged():
     return True if session.get('admin_logged') else False
 
@@ -76,10 +87,14 @@ def page_not_found(e):
 # Routers
 # =============================================================================
 
+# Home router's
 @app.route('/')
 def home():
-    return render_template('index.html', title="Pizza | Oderman", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+    local = take_temperature("Canberra")
+    return render_template('index.html', local=int(local), title="Pizza | Oderman", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
 
+# =============================================================================
+# Menu routers'
 @app.route('/menu', methods=["POST", "GET"])
 @login_required
 def menu():
@@ -97,7 +112,10 @@ def showFood(alias):
         abort(404)
 
     return render_template('food.html', menu=dbase.getMenu(), item=item, name="Pizza")
+# =============================================================================
 
+# =============================================================================
+# Adminss routers'
 @app.route("/alogin", methods=["POST", "GET"])
 def alogin():
     if aIsLogged():
@@ -133,9 +151,28 @@ def routeFood():
         category = request.form["category"]
         print(name, category)
         dbase.addFood(title=name, price=price, description=description, type=category)
-        flash("Успішно!", "success")
+        flash("Успішно!", "success") 
 
     return render_template("addFood.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+
+@app.route("/addGift", methods=["POST", "GET"])
+def routeGift():
+    if not aIsLogged():
+        return redirect(url_for("alogin"))
+
+    if request.method == "POST":
+        name = request.form["name"]
+        amount = request.form["amount"]
+        limit = request.form["limit"]
+        dbase.addGift(promo=name, amount=amount, count=limit)
+        flash("Успішно!", "success")
+
+    return render_template("addGift.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+
+# =============================================================================
+
+# =============================================================================
+# Users routers'
 
 @app.route("/registration", methods=["POST", "GET"])
 def registration():
@@ -173,17 +210,38 @@ def logout():
     flash("Success! You log out from account!", "success")
     return redirect(url_for('login'))
 
+@app.route("/deleteFood<alias>")
+@login_required
+def deleteFood(alias):
+    dbase.deleteFoodFromUserProfile(current_user.get_id(), alias)
+    
+    return redirect(url_for(f"profile", alias=current_user.get_id()))
+
+@app.route("/pay")
+@login_required
+def pay():
+    user = dbase.getUserByEmail(current_user.getEmail())
+    price = int(getprice())
+    if not price > int(user["balance"]):
+        
+        user_id = current_user.get_id()
+        dbase.deductBalance(price, user_id)
+        orders = dbase.getOrdersByUserId(user_id)
+        for i in orders:
+            dbase.deleteFoodFromUserProfile(user_id, i["id"])
+
+        flash("Success!", "success")
+    else:
+        flash("You don't have enough money!", "error")
+    return redirect(url_for(f"profile", alias=current_user.get_id()))
 
 @app.route('/profile/<alias>', methods=["GET"])
 @login_required
 def profile(alias):
     if not int(current_user.get_id()) == int(alias):
         return redirect(url_for('home'))
-    user_id = current_user.get_id()
-    orders = dbase.getOrdersByUserId(user_id)
-    fullprice = 0
-    for i in orders:
-        fullprice += float(i['price'])
+    fullprice = getprice()
+    orders = dbase.getOrdersByUserId(current_user.get_id())
     return render_template("profile.html", menu=dbase.getMenu(), fullprice=fullprice, item=dbase.getUserByEmail(current_user.getEmail()), orders=orders, title=f"Profile | {current_user.getName()}")
 
 @app.route("/food/<alias>/order", methods=["POST", "GET"])
@@ -199,20 +257,6 @@ def orderFood(alias):
             flash("Food item not found", "error")
     return redirect(url_for('home'))
 
-@app.route("/addGift", methods=["POST", "GET"])
-def routeGift():
-    if not aIsLogged():
-        return redirect(url_for("alogin"))
-
-    if request.method == "POST":
-        name = request.form["name"]
-        amount = request.form["amount"]
-        limit = request.form["limit"]
-        dbase.addGift(promo=name, amount=amount, count=limit)
-        flash("Успішно!", "success")
-
-    return render_template("addGift.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
-
 @app.route("/gift", methods=["POST", "GET"])
 @login_required
 def useGift():
@@ -223,6 +267,38 @@ def useGift():
             flash("Success", "success") if gif else flash("This gift has used already!", "error")
 
     return render_template("useGift.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+
+# =============================================================================
+
+# =============================================================================
+# Payment
+
+@app.route("/payment", methods=["POST", "GET"])
+@login_required
+def payment():
+    if request.method == "POST":
+        amount = request.form["payment"]
+
+        api = Api(merchant_id=1396424,
+                  secret_key='test')
+        
+        checkout = Checkout(api=api)
+        
+        data = {
+            "currency": "UAH",
+            "amount": str(amount) + "00"
+        }
+        global url
+        url = checkout.url(data)
+        if url.get("response_status") == "success":
+            dbase.giveMoney(int(amount), int(current_user.get_id())) 
+
+        return redirect(url.get('checkout_url'))
+
+    
+    return render_template("payment.html", title="Oderman | AddFood", menu=dbase.getMenu(), item=dbase.getUserByEmail(current_user.getEmail()) if current_user.is_authenticated else None)
+
+# =============================================================================
 
 # =============================================================================
 # Operations setup

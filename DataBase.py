@@ -183,3 +183,79 @@ class DataBase:
     
         return True
     
+    def giveMoney(self, amount, user):
+        try:
+            self.__cur.execute("SELECT balance FROM account WHERE id = ?", (user,))
+            user_res = self.__cur.fetchone()
+            if user_res is None:
+                print(f"User with id {user} not found.")
+                return False
+    
+            current_balance = user_res['balance']
+            new_balance = current_balance + amount
+            self.__cur.execute("UPDATE account SET balance = ? WHERE id = ?", (new_balance, user))
+            self.__db.commit()
+    
+        except sqlite3.Error as e:
+            print("Error updating account in DB: ", e)
+            return False
+    
+        return True
+
+    def deleteFoodFromUserProfile(self, user_id, food_id):
+        try:
+            # Fetch the user's current offers
+            self.__cur.execute("SELECT offer FROM account WHERE id = ?", (user_id,))
+            res = self.__cur.fetchone()
+            if not res:
+                print("User not found")
+                return False
+
+            current_offer = res["offer"]
+            offer_ids = current_offer.split()
+            
+            # Check if the food ID is in the user's offers
+            if str(food_id) not in offer_ids:
+                print(f"Food ID {food_id} not found in user's offers")
+                return False
+            
+            # Remove the food ID from the offers list
+            offer_ids.remove(str(food_id))
+            
+            # Join the remaining offer IDs into a string
+            updated_offer = " ".join(offer_ids) if offer_ids else "None"
+            
+            # Update the user's offers in the database
+            self.__cur.execute("UPDATE account SET offer = ? WHERE id = ?", (updated_offer, user_id))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Error updating data in DB: " + str(e))
+            return False
+        return True
+    
+    def deductBalance(self, count, user_id):
+        try:
+            # Fetch the user's current balance
+            self.__cur.execute("SELECT balance FROM account WHERE id = ?", (user_id,))
+            res = self.__cur.fetchone()
+            if not res:
+                print("User not found")
+                return False
+
+            current_balance = res["balance"]
+
+            # Check if the user has enough balance
+            if current_balance < count:
+                print("Insufficient balance")
+                return False
+
+            # Deduct the amount from the user's balance
+            new_balance = current_balance - count
+
+            # Update the user's balance in the database
+            self.__cur.execute("UPDATE account SET balance = ? WHERE id = ?", (new_balance, user_id))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Error updating balance in DB: ", e)
+            return False
+        return True

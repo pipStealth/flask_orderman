@@ -14,11 +14,22 @@
         </div>
         <p class="item-balance">Balance: {{ item.balance }}₴</p>
         <p class="item-balance">Total price: {{ fullprice }}₴</p>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
         <div class="item-buttons">
-            <form action="" method="post">
+            <form action="{{ url_for('pay')}}" method="get">
                 <button class="btn btn-order-all" type="submit">Order All</button>
             </form>
-            <form action="" method="post">
+            <form action="{{ url_for('payment') }}" method="get">
                 <button class="btn btn-payment">Payment</button>
             </form>
             <form action="{{ url_for('useGift')}}" method="get">
@@ -48,6 +59,13 @@
         <div class="food-details">
             <p class="title"><a href="{{ url_for('showFood', alias=item.id)}}">{{ item.title }}></a></p>
             <p class="annonce">{{ item.description[:50] | striptags }}...</p>
+        </div>
+        <div class="delete-button">
+            <form action="{{ url_for('deleteFood', alias=item.id) }}" method="GET">
+                <button type="submit" style="border: none; background: none;">
+                    <img src="{{ url_for('static', filename='img/delete_button.png') }}" alt="Delete">
+                </button>
+            </form>
         </div>
         <p class="price">{{ item.price }}₴</p>
     </div>

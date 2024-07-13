@@ -1,4 +1,4 @@
-import requests
+import request
 
 # Установка параметров Portmone API
 merchant_id = 'your_merchant_id'
@@ -17,5 +17,5 @@ payment_params = {
     'failure_url': 'https://example.com/payment_failure',
 }
 
-response = requests.post(base_url, data=payment_params, auth=(merchant_id, password))
+response = request.post(base_url, data=payment_params, auth=(merchant_id, password))
 print("Payment Status Code:", response.status_code)

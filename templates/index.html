@@ -14,6 +14,15 @@
             <a href="/menu" class="menu-button">Check offer</a>
         </div>
         <img src="../static/img/homePage_pizza.png" alt="Pizza Image">
+        <div class="temperature">
+        {% if local >= 20 %}
+            <a href="menu">Do you like the soft Beverages?</a>
+        {% elif local >= 0 %}
+            <a href="menu">Do you like the hot pizz?</a>
+        {% else %}
+            <a href="menu">Do you like the cup of hot chocolate?</a>
+        {% endif %}
+        </div>
     </div>
 </body>
 {% endblock %}
